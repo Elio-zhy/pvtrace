@@ -11,6 +11,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+/* Start address of text section */
+extern char __executable_start;
+
 /* Function prototypes with attributes */
 void main_constructor( void )
 	__attribute__ ((no_instrument_function, constructor));
@@ -43,12 +46,12 @@ void main_deconstructor( void )
 
 void __cyg_profile_func_enter( void *this, void *callsite )
 {
-  fprintf(fp, "E%p\n", (int *)this);
+  fprintf(fp, "E0x%lx\n", (size_t)this - (size_t)&__executable_start);
 }
 
 
 void __cyg_profile_func_exit( void *this, void *callsite )
 {
-  fprintf(fp, "X%p\n", (int *)this);
+  fprintf(fp, "X0x%lx\n", (size_t)this - (size_t)&__executable_start);
 }
 
